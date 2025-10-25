@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import study.backend.ddd.transactionscript.domain.TxPost;
 import study.backend.ddd.transactionscript.repository.TxPostRepository;
 
+import java.util.NoSuchElementException;
+
 @RequiredArgsConstructor
 public class TxBlogService {
     private final TxPostRepository postRepository;
@@ -26,6 +28,15 @@ public class TxBlogService {
             .content(content)
             .author(author)
             .build();
+
+        return postRepository.save(post);
+    }
+
+    public TxPost getPostById(Long id) {
+        TxPost post = postRepository.findById(id)
+            .orElseThrow(NoSuchElementException::new);
+
+        post.setViewCount(post.getViewCount() + 1);
 
         return postRepository.save(post);
     }

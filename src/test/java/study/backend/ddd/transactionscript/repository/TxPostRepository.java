@@ -4,6 +4,7 @@ import study.backend.ddd.transactionscript.domain.TxPost;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class TxPostRepository {
     private final Map<Long, TxPost> db = new HashMap<>();
@@ -17,5 +18,15 @@ public class TxPostRepository {
         db.put(post.getId(), post);
 
         return post;
+    }
+
+    public Optional<TxPost> findById(Long id) {
+        return existsById(id)
+            ? Optional.of(db.get(id))
+            : Optional.empty();
+    }
+
+    public boolean existsById(Long id) {
+        return db.containsKey(id);
     }
 }
