@@ -3,6 +3,7 @@ package study.backend.ddd.transactionscript.repository;
 import study.backend.ddd.transactionscript.domain.TxPost;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,5 +29,11 @@ public class TxPostRepository {
 
     public boolean existsById(Long id) {
         return db.containsKey(id);
+    }
+
+    public List<TxPost> findAll() {
+        return db.values()
+            .stream()
+            .toList();
     }
 }

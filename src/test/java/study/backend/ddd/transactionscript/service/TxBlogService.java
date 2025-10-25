@@ -6,6 +6,7 @@ import study.backend.ddd.transactionscript.dto.TxPostStatus;
 import study.backend.ddd.transactionscript.repository.TxPostRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -55,5 +56,9 @@ public class TxBlogService {
         post.setUpdatedAt(LocalDateTime.now());
 
         postRepository.save(post);
+    }
+
+    public List<TxPost> getAllPosts() {
+        return postRepository.findAll();
     }
 }
