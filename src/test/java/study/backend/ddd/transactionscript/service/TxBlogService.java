@@ -1,8 +1,10 @@
 package study.backend.ddd.transactionscript.service;
 
 import lombok.RequiredArgsConstructor;
+import study.backend.ddd.transactionscript.domain.TxComment;
 import study.backend.ddd.transactionscript.domain.TxPost;
 import study.backend.ddd.transactionscript.dto.TxPostStatus;
+import study.backend.ddd.transactionscript.repository.TxCommentRepository;
 import study.backend.ddd.transactionscript.repository.TxPostRepository;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class TxBlogService {
     private final TxPostRepository postRepository;
+    private final TxCommentRepository commentRepository;
 
     public TxPost createPost(String title, String content, String author) {
         if (title == null || title.trim().isEmpty()) {
@@ -60,5 +63,27 @@ public class TxBlogService {
 
     public List<TxPost> getAllPosts() {
         return postRepository.findAll();
+    }
+
+    public TxComment createComment(Long postId, String content, String author) {
+        if (!postRepository.existsById(postId)) {
+            throw new NoSuchElementException("해당 게시글이 존재하지 않습니다. postId=" + postId);
+        }
+
+        if (content == null || content.trim().isEmpty()) {
+            throw new IllegalArgumentException("내용을 입력해주세요.");
+        }
+
+        if (author == null || author.trim().isEmpty()) {
+            throw new IllegalArgumentException("작성자를 입력해주세요.");
+        }
+
+        TxComment comment = TxComment.builder()
+            .postId(postId)
+            .content(content)
+            .author(author)
+            .build();
+
+        return commentRepository.save(comment);
     }
 }
